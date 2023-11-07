@@ -1,0 +1,8 @@
+Logs for program run on 2022-12-31 08:53:55.397040:Moved 0 files of filetypes .gif, .webm, .mov and .mp4 from
+C:\Users\Sampo\Downloads/
+to
+C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\mp4/.
+Moved 0 files of filetypes .png, .jpg and .jpeg from
+C:\Users\Sampo\Downloads/
+to
+C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\images/.

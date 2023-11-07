@@ -1,0 +1,9 @@
+Logs for program run on 2023-08-07 17:00:08.057933:
+Moved 0 files of filetypes .gif, .webm, .mov and .mp4 from
+C:\Users\Sampo\Downloads/
+to
+C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\mp4/.
+Moved 0 files of filetypes .png, .jpg and .jpeg from
+C:\Users\Sampo\Downloads/
+to
+C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\images/.

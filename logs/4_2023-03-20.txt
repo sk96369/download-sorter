@@ -1,0 +1,9 @@
+Logs for program run on 2023-03-20 17:00:08.723114:
+Moved 1 files of filetypes .gif, .webm, .mov and .mp4 from
+C:\Users\Sampo\Downloads/
+to
+C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\mp4/.
+Moved 1 files of filetypes .png, .jpg and .jpeg from
+C:\Users\Sampo\Downloads/
+to
+C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\images/.
