@@ -1,7 +1,7 @@
 # Lines beginning with "#" are ignored
-#Enter the path to your downloads folder on the line below:
-C:\Users\Sampo\Downloads
-#Enter the path to your target folder on the line below:
-C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\mp4
-#Enter the path to your second target folder (optional)
-C:\Users\Sampo\Pictures\asennetutmeemit\freshmemesonly\images
+# Edit the path to your downloads folder on the line below:
+C:\Users\You\Downloads\
+# Edit the lines below, or add more using the same format.
+# All the files in the downloads folder with matching filename extensions inside the square brackets are moved to the directory specified after "=>"
+[jpg,png] => C:\Users\You\Pictures\
+[mp4] => C:\Users\You\Video\
