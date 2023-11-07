@@ -1,20 +1,21 @@
-# Moves all the .mov, .gif, .mp4 and .webm files from the downloads folder to the desired
-# Image files too
-# target folder
-
 from pathlib import Path
 import os
 from datetime import datetime
 import re
 
-#Add filetypes below:
+
+class Instruction:
+    def __init__(self, extensions, output_dir):
+        extensions = re.sub(r"[\[\]\s]", "", extensions)
+        self.extensions = re.split(",", extensions)
+        self.output_dir = "output_dir"
+
+
 filetypes = ".(mov|gif|mp4|webm|gif)$"
-#Add optional secondary filetypes below:
-secondary_filetypes = ".(png|jpg|jpeg)$"
 
 download_path = ""
 target_path = ""
-secondary_path = ""
+instructions = []
 settings_path = "settings/settings.txt"
 dir = os.listdir()
 
@@ -24,20 +25,35 @@ if "logs" not in dir:
 log_time = datetime.now()
 log_path = "logs/{}_{}.txt".format(len(os.listdir("logs")), log_time.date())
 
-
 if "settings" not in dir:
     os.mkdir("settings")
 if not os.path.exists(settings_path):
     with open(settings_path, "w") as sf:
         sf.write("# Lines beginning with \"#\" are ignored\n")
-        sf.write("#Enter the path to your downloads folder on the line below:\n")
+        sf.write("# Enter the path to your downloads folder on the line\
+                below:\n")
         sf.write("\n")
-        sf.write("#Enter the path to your target folder on the line below:\n")
-        sf.write("\n")
+        sf.write("# Edit the lines below, or add more using the same format.\
+                \n")
+        sf.write("# All the files in the downloads folder with filename\
+                 extensions matching the\n")
+        sf.write("# ones inside the square brackets are moved to the\
+                directory specified after \"=>\"\n")
+        sf.write(r"[jpg, png] => C:\Users\You\Pictures\ ")
 
 with open(settings_path, "r") as sf:
+    lines = []
     for line in sf:
         if line[0] != "#":
+            lines.append(line.strip())
+
+    # The first line in the settings file should be the downloads folder
+    download_path = lines[0].strip()
+    for line in lines:
+        # All lines not starting with a list of file extensions are not needed
+        if line[0] == "[":
+            
+
             if download_path == "":
                 download_path = line.strip()
                 if download_path[-1] != "/":
