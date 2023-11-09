@@ -87,7 +87,7 @@ if download_path != "":
                 while os.path.isfile(new_filename):
                     new_filename_parts = new_filename.split(".")
                     new_filename = ""
-                    new_filename.join([new_filename_parts[0:-1],
+                    new_filename.join(["".join(new_filename_parts[0:-1]),
                                        "_copy.",
                                        new_filename_parts[-1]])
                 # If the destination and origin are on the same drive
