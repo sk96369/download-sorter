@@ -86,10 +86,8 @@ if download_path != "":
                 new_filename = os.path.join(instructions[extension], d)
                 while os.path.isfile(new_filename):
                     new_filename_parts = new_filename.split(".")
-                    new_filename = ""
-                    new_filename.join(["".join(new_filename_parts[0:-1]),
-                                       "_copy.",
-                                       new_filename_parts[-1]])
+                    new_filename = ".".join(new_filename_parts[0:-1])
+                    new_filename += "_copy." + new_filename_parts[-1]
                 # If the destination and origin are on the same drive
                 if old_filename.split(":")[0] == new_filename.split(":")[0]:
                     os.rename("{}".format(old_filename), "{}"
