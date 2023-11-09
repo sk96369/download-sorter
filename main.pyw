@@ -78,8 +78,12 @@ if download_path != "":
         for d in downloads_files:
             extension = d.split(".")[-1]
             if extension in instructions.keys():
-                os.rename("{}".format(os.path.join(download_path, d)), "{}"
-                          .format(os.path.join(instructions[extension], d)))
+                old_filename = os.path.join(download_path, d)
+                new_filename = os.path.join(instructions[extension], d)
+                while os.path.isfile(new_filename):
+                    new_filename = "{}_copy".format(new_filename)
+                os.rename("{}".format(old_filename), "{}"
+                          .format(new_filename))
                 logs.append("{} => {}".format(d, instructions[extension]))
     else:
         with open(log_path, "a") as log_file:
@@ -94,6 +98,6 @@ if len(logs) > 0:
     with open(log_path, "a") as log_file:
         log_file.write("Logs for program run on {}:\n".format(log_time))
         for line in logs:
-            log_file.write("{line}\n")
+            log_file.write("{}\n".format(line))
 
 quit()
