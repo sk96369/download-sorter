@@ -5,10 +5,11 @@ import re
 
 
 class Instruction:
-    def __init__(self, extensions, output_dir):
+    def __init__(self, line):
+        [extensions, output_dir] = re.split("=>", line, 2)
         extensions = re.sub(r"[\[\]\s]", "", extensions)
         self.extensions = re.split(",", extensions)
-        self.output_dir = "output_dir"
+        self.output_dir = output_dir.strip()
 
 
 filetypes = ".(mov|gif|mp4|webm|gif)$"
@@ -52,20 +53,8 @@ with open(settings_path, "r") as sf:
     for line in lines:
         # All lines not starting with a list of file extensions are not needed
         if line[0] == "[":
-            
+            instructions.append(Instruction(line))
 
-            if download_path == "":
-                download_path = line.strip()
-                if download_path[-1] != "/":
-                        download_path += "/"
-            elif target_path == "":
-                target_path = line.strip()
-                if target_path[-1] != "/":
-                    target_path += "/"
-            elif secondary_path == "":
-                secondary_path = line.strip()
-                if secondary_path[-1] != "/":
-                    secondary_path += "/"
 
 filecount = 0
 secondary_filecount = 0
@@ -78,7 +67,6 @@ if download_path != "" and target_path != "":
             if matches:
                 filecount += 1
                 os.rename("{}{}".format(download_path, d), "{}{}".format(target_path, d))
-        if secondary_path != "" and secondary_filetypes != "":
             file_pattern_2 = re.compile(secondary_filetypes)
             for d in downloads_files:
                 matches = re.search(file_pattern_2, d)
