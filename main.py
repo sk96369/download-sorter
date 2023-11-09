@@ -23,6 +23,7 @@ instructions = {}
 download_path = ""
 settings_path = "settings/settings.txt"
 dir = os.listdir()
+logs = []
 
 if "logs" not in dir:
     os.mkdir("logs")
@@ -45,7 +46,10 @@ below:\n")
 extensions matching the\n")
         sf.write("# ones inside the square brackets are moved to the \
 directory specified after \"=>\"\n")
-        sf.write(r"[jpg, png] => C:\Users\You\Pictures\ ")
+        sf.write(r"[jpg, png] => {}".format(str(Path.home() / "Pictures"))
+        logs.append("Created file settings/settings.txt\n")
+        logs.append("Edit the settings file to set up the filetype rules to \
+your liking.\n")
 
 with open(settings_path, "r") as sf:
     lines = []
@@ -70,7 +74,6 @@ if len(instructions.keys()) < 1:
     print("No instructions found in \"settings/settings.txt\"")
     quit()
 
-logs = []
 
 if download_path != "":
     if os.path.exists(download_path):
@@ -78,22 +81,24 @@ if download_path != "":
         for d in downloads_files:
             extension = d.split(".")[-1]
             if extension in instructions.keys():
-                os.rename("{}".format(os.path.join(download_path, d)), "{}"
-                          .format(os.path.join(instructions[extension], d)))
+                old_filename = os.path.join(download_path, d)
+                new_filename = os.path.join(instructions[extension], d)
+                while os.path.isfile(new_filename):
+                    new_filename = "{}_copy".format(new_filename)
+                os.rename("{}".format(old_filename), "{}"
+                          .format(new_filename))
                 logs.append("{} => {}".format(d, instructions[extension]))
     else:
-        with open(log_path, "a") as log_file:
-            log_file.write("The paths found in {} do not exist! Exiting..."
-                    .format(settings_path))
+        logs.append("The paths found in {} do not exist! Exiting..."
+                .format(settings_path))
 else:
-    with open(log_path, "a") as log_file:
-        log_file.write("Open the file \"settings/settings.txt\" and enter the paths \
+    logs.append("Open the file \"settings/settings.txt\" and enter the paths \
 to your downloads folder and your target folder")
 
 if len(logs) > 0:
     with open(log_path, "a") as log_file:
         log_file.write("Logs for program run on {}:\n".format(log_time))
         for line in logs:
-            log_file.write("{line}\n")
+            log_file.write("{}\n".format(line))
 
 quit()

@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 from datetime import datetime
 import re
+import shutil
 
 
 class Instruction:
@@ -46,7 +47,7 @@ below:\n")
 extensions matching the\n")
         sf.write("# ones inside the square brackets are moved to the \
 directory specified after \"=>\"\n")
-        sf.write(r"[jpg, png] => {}".format(str(Path.home() / "Pictures"))
+        sf.write(r"[jpg, png] => {}".format(str(Path.home() / "Pictures")))
         logs.append("Created file settings/settings.txt\n")
         logs.append("Edit the settings file to set up the filetype rules to \
 your liking.\n")
@@ -85,8 +86,14 @@ if download_path != "":
                 new_filename = os.path.join(instructions[extension], d)
                 while os.path.isfile(new_filename):
                     new_filename = "{}_copy".format(new_filename)
-                os.rename("{}".format(old_filename), "{}"
-                          .format(new_filename))
+
+                # If the destination and origin are on the same drive
+                if old_filename.split(":")[0] == new_filename.split(":")[0]:
+                    os.rename("{}".format(old_filename), "{}"
+                              .format(new_filename))
+                # If the destination and origin are on different drives
+                else:
+                    shutil.move(old_filename, new_filename)
                 logs.append("{} => {}".format(d, instructions[extension]))
     else:
         logs.append("The paths found in {} do not exist! Exiting..."
