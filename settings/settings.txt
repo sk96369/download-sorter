@@ -1,7 +1,0 @@
-# Lines beginning with "#" are ignored
-# Enter the path to your downloads folder on the line below:
-C:\Users\Sampo\Downloads
-# Edit the lines below, or add more using the same format.
-# All the files in the downloads folder with filename extensions matching the
-# ones inside the square brackets are moved to the directory specified after "=>"
-[jpg, png] => C:\Users\You\Pictures\ 
