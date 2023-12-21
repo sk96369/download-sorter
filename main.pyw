@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import re
 import shutil
+import time
 
 
 class Instruction:
@@ -23,6 +24,7 @@ instructions = {}
 
 download_path = ""
 settings_path = "settings/settings.txt"
+time_filter = 0
 dir = os.listdir()
 logs = []
 
@@ -41,6 +43,7 @@ if not os.path.exists(settings_path):
 below:\n")
         sf.write(str(Path.home() / "Downloads"))
         sf.write("\n")
+        sf.write("# Ignore files newer than:\n0\n# minutes old\n")
         sf.write("# Edit the lines below, or add more using the same format. \
 \n")
         sf.write("# All the files in the downloads folder with filename \
@@ -55,11 +58,13 @@ your liking.\n")
 with open(settings_path, "r") as sf:
     lines = []
     for line in sf:
-        if line[0] != "#":
+        if line != "" and line[0] != "#":
             lines.append(line.strip())
 
     # The first line in the settings file should be the downloads folder
     download_path = lines[0].strip()
+    # The second line should be the time filter (in minutes)
+    time_filter = int(lines[1], base=10)
     for line in lines:
         # All lines not starting with a list of file extensions are not needed
         if len(line) > 0 and line[0] == "[":
@@ -83,22 +88,23 @@ if download_path != "":
             extension = d.split(".")[-1]
             if extension in instructions.keys():
                 old_filename = os.path.join(download_path, d)
-                new_filename = os.path.join(instructions[extension], d)
-                while os.path.isfile(new_filename):
-                    new_filename_parts = new_filename.split(".")
-                    new_filename = ".".join(new_filename_parts[0:-1])
-                    new_filename += "_copy." + new_filename_parts[-1]
-                # If the destination and origin are on the same drive
-                if old_filename.split(":")[0] == new_filename.split(":")[0]:
-                    os.rename("{}".format(old_filename), "{}"
-                              .format(new_filename))
-                # If the destination and origin are on different drives
-                else:
-                    shutil.move(old_filename, new_filename)
-                logs.append("{} => {}".format(d, instructions[extension]))
+                if os.path.getmtime(old_filename) + (time_filter * 60) < time.time():
+                    new_filename = os.path.join(instructions[extension], d)
+                    while os.path.isfile(new_filename):
+                        new_filename_parts = new_filename.split(".")
+                        new_filename = ".".join(new_filename_parts[0:-1])
+                        new_filename += "_copy." + new_filename_parts[-1]
+                    # If the destination and origin are on the same drive
+                    if old_filename.split(":")[0] == new_filename.split(":")[0]:
+                        os.rename("{}".format(old_filename), "{}"
+                                  .format(new_filename))
+                    # If the destination and origin are on different drives
+                    else:
+                        shutil.move(old_filename, new_filename)
+                    logs.append("{} => {}".format(d, instructions[extension]))
     else:
         logs.append("The paths found in {} do not exist! Exiting..."
-                .format(settings_path))
+            .format(settings_path))
 else:
     logs.append("Open the file \"settings/settings.txt\" and enter the paths \
 to your downloads folder and your target folder")
