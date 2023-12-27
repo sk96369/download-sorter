@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import re
 import shutil
+import sys
 import time
 
 
@@ -24,6 +25,7 @@ instructions = {}
 
 download_path = ""
 settings_path = "settings/settings.txt"
+
 time_filter = 0
 dir = os.listdir()
 logs = []
@@ -64,7 +66,8 @@ with open(settings_path, "r") as sf:
     # The first line in the settings file should be the downloads folder
     download_path = lines[0].strip()
     # The second line should be the time filter (in minutes)
-    time_filter = int(lines[1], base=10)
+    if len(sys.argv) <= 1 or sys.argv[1] not in ["anytime", "notime", "at"]:
+        time_filter = int(lines[1], base=10)
     for line in lines:
         # All lines not starting with a list of file extensions are not needed
         if len(line) > 0 and line[0] == "[":
